@@ -1,7 +1,10 @@
 
 import NFG
+import construction
+
 
 def test_one():
+	# Make game
 	states = ['a', 'b']
 	players = ['row', 'col']
 	actions = {}
@@ -39,7 +42,14 @@ def test_one():
 	payoffs['b']['D']['F']['row'] = 15
 	payoffs['b']['D']['F']['col'] = 16
 	game = NFG.NFG(players, actions, states, payoffs)
-	print(game)
+	# Make plans
+	plans = construction.make_plans(game)
+	print(str(len(plans)))
 
-if __name__ == "__main__":
+
+
+
+
+
+if __name__ == '__main__':
 	test_one()

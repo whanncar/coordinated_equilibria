@@ -1,5 +1,6 @@
 
 
+# Get k-tuples of elements of s
 def get_ordered_tuples(s, k):
 
   result = []
