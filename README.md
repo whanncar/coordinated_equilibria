@@ -12,6 +12,7 @@
 
 * Make test for Plan methods
 
+* Restore understanding of algorithm
 
 
 ### file_io
