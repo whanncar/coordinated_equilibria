@@ -10,6 +10,15 @@
 
 * Make LP classes
 
+* Make test for Plan methods
+
+
+
+### file_io
+
+* load_NFG
+* save_NFG
+
 
 
 ### construction
