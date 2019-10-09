@@ -6,9 +6,16 @@
   * ~~Plan~~
 
 * Make construction code
-  * Construction
+  * ~~construction~~
 
 * Make LP classes
+
+
+
+### construction
+
+* make_plans
+* make_plans_for_given_state
 
 
 ### utils
