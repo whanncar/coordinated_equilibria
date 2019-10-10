@@ -1,72 +1,27 @@
 # coordinated_equilibria
 
-* Make objects
-  * ~~Normal Form Game~~
-  * ~~Node~~
-  * ~~Plan~~
 
-* Make construction code
-  * ~~construction~~
-
-* Make LP classes (?)
+## TODO
 
 * Make tests for everything
 
-* ~~Restore understanding of algorithm~~
-
 * Decide on and implement algorithm for finding vertices
 
+* Implement algorithm for finding C
 
-
-### coord_eq
-
-* get_coord_eq_set
-
-
-
-### self_contained
-
-* get_self_contained_set
-* get_self_contained_labels
-
-
-
-### pbe
-
-* get_pbe_set
-* get_pbe_labels
+* Implement algorithm for finding D
 
 
 
 
+## Documentation
 
 
 
-
-### file_io
-
-* load_NFG
-* save_NFG
+### Basic objects
 
 
-
-### construction
-
-* make_plans
-* make_plans_with_given_labels
-* make_plans_for_given_state_with_given_labels
-
-
-### utils
-
-* get_ordered_tuples
-
-
-
-
-
-
-### NFG
+#### NFG
 
 * Attributes
   * players
@@ -77,7 +32,7 @@
   * get_payoffs
 
 
-### Node
+#### Node
 
 * Attributes
   * player
@@ -85,7 +40,7 @@
   * children
 
 
-### Plan
+#### Plan
 
 * Attributes
   * state
@@ -94,3 +49,80 @@
   * get_on_path_action_profile
   * get_copy
   * get_deviation_payoffs
+
+
+
+### LP
+
+
+#### LP
+
+* prepare_LP_data
+* get_all_vertices
+
+
+#### LP_wrapper
+
+* minimize_container
+* maximize_container
+* maximize_with_probs_container
+* maximize
+
+
+### Equilibrium set calculators
+
+
+#### coord_eq
+
+* get_coord_eq_set
+
+
+#### self_contained
+
+* get_self_contained_set
+* get_self_contained_labels
+
+
+#### pbe
+
+* get_pbe_set
+* get_pbe_labels
+
+
+
+### Helpers
+
+
+#### construction
+
+* make_plans
+* make_plans_with_given_labels
+* make_plans_for_given_state_with_given_labels
+
+
+#### utils
+
+* get_ordered_tuples
+
+
+
+### IO/UI
+
+
+#### file_io
+
+* load_NFG
+* save_NFG
+
+
+
+
+
+
+
+
+
+
+
+
+
