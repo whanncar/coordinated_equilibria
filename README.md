@@ -16,6 +16,33 @@
 
 * Decide on and implement algorithm for finding vertices
 
+
+
+### coord_eq
+
+* get_coord_eq_set
+
+
+
+### self_contained
+
+* get_self_contained_set
+* get_self_contained_labels
+
+
+
+### pbe
+
+* get_pbe_set
+* get_pbe_labels
+
+
+
+
+
+
+
+
 ### file_io
 
 * load_NFG
