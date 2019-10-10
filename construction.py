@@ -9,9 +9,6 @@ from Node import Node
 from Plan import Plan
 
 
-def make_plans(game):
-	return make_plans_with_given_labels(game, game.actions)
-
 
 def make_plans_with_given_labels(game, labels): # labels: dict: player -> list of allowed labels
 	result = []

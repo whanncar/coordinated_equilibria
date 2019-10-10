@@ -46,8 +46,9 @@ class Plan:
 
 
 
-	def get_deviation_payoff(self, game, state, player, action):
+	def get_deviation_payoff(self, game, player, action):
 		current = self.root
+		state = self.state
 		ap = {}
 		while True:
 			if current.player == player:
@@ -62,12 +63,12 @@ class Plan:
 
 
 
-	def get_deviation_payoffs(self, game, state):
+	def get_deviation_payoffs(self, game):
 		payoffs = {}
 		for p in game.players:
 			payoffs[p] = {}
 			for a in game.actions[p]:
-				payoffs[p][a] = get_deviation_payoff(game, state, p, a)
+				payoffs[p][a] = get_deviation_payoff(game, p, a)
 		return payoffs
 
 
