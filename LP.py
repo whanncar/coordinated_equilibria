@@ -39,5 +39,23 @@ def prepare_LP_data(game, labels):
 
 
 
+def get_all_vertices(matrix):
+	# TODO: Settle on an algorithm
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

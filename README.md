@@ -8,12 +8,13 @@
 * Make construction code
   * ~~construction~~
 
-* Make LP classes
+* Make LP classes (?)
 
-* Make test for Plan methods
+* Make tests for everything
 
-* Restore understanding of algorithm
+* ~~Restore understanding of algorithm~~
 
+* Decide on and implement algorithm for finding vertices
 
 ### file_io
 
