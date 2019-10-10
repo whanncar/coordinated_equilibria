@@ -39,3 +39,42 @@ class Plan:
 
     return p
 
+
+
+
+
+
+
+
+	def get_deviation_payoff(self, game, state, player, action):
+		current = self.root
+		ap = {}
+		while True:
+			if current.player == player:
+				ap[current.player] = action
+			else:
+				ap[current.player] = current.action
+			if len(current.children.keys()) == 0:
+				break
+			current = current.children[ap[current.player]]
+		payoffs = game.get_payoffs(ap, state)
+		return payoffs[player]
+
+
+
+	def get_deviation_payoffs(self, game, state):
+		payoffs = {}
+		for p in game.players:
+			payoffs[p] = {}
+			for a in game.actions[p]:
+				payoffs[p][a] = get_deviation_payoff(game, state, p, a)
+		return payoffs
+
+
+
+
+
+
+
+
+

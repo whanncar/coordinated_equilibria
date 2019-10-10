@@ -25,7 +25,8 @@
 ### construction
 
 * make_plans
-* make_plans_for_given_state
+* make_plans_with_given_labels
+* make_plans_for_given_state_with_given_labels
 
 
 ### utils
@@ -64,3 +65,4 @@
 * Methods
   * get_on_path_action_profile
   * get_copy
+  * get_deviation_payoffs
