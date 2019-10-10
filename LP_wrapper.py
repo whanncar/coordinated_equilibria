@@ -31,4 +31,8 @@ def maximize_with_probs_container(objective_vector, ineq_matrix, ineq_vector, eq
 	return result
 
 
-
+def maximize(objective_vector, matrix):
+	ineq_vector = []
+	for i in range(len(matrix)):
+		ineq_vector.append(0)
+	return maximize_with_probs_container(objective_vector, matrix, ineq_vector, [], [])

@@ -27,7 +27,7 @@ def prepare_LP_data(game, labels):
 					recommendations = on_path_profiles[i]
 					# The code really begins here
 					if a == recommendations[player]:
-						row.append(dev_payoffs[player][a] - dev_payoffs[player][b])
+						row.append(dev_payoffs[player][b] - dev_payoffs[player][a])
 					else:
 						row.append(0)
 				matrix.append(row)
@@ -36,3 +36,8 @@ def prepare_LP_data(game, labels):
 	result['obedient profiles'] = on_path_profiles
 	result['matrix'] = matrix
 	return result
+
+
+
+
+
