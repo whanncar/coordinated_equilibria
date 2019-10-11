@@ -19,4 +19,14 @@ def get_self_contained_set(game):
 
 
 def get_self_contained_labels(game):
-	# TODO: everything
+	# Instantiate labels
+	# Set new_labels to actions
+	# Set different to true
+	# While different
+		# Set different to false
+		# Set labels to new_labels
+		# Get LP for labels
+		# Populate new_labels with all labels that get positive probability
+		# If labels is same as new_labels
+			# Set different to false
+	# Return labels

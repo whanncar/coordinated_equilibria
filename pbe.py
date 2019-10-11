@@ -16,4 +16,12 @@ def get_pbe_set(game):
 
 
 def get_pbe_labels(game):
-	# TODO: everything
+	# Set labels to actions
+  # While labels changes
+    # Set new_labels to empty set
+    # While new_labels changes
+      # Get deviant plans with things on new_labels above marked vertex
+      # Get distributions which satisfy incentive constraints away from new_labels
+      # Get things in support of those distributions and add these to new_labels
+    # Set labels to new_labels
+  # Return labels
