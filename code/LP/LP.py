@@ -39,6 +39,22 @@ def prepare_LP_data(game, labels):
 
 
 
+
+def get_recommended_action_indicators(game, on_path_profiles):
+	num_plans = len(on_path_profiles)
+	result = {}
+	for player in game.players:
+		result[player] = {}
+		for action in game.actions[player]:
+			result[player][action] = [0] * num_plans
+	for i in range(len(on_path_profiles)):
+		ap = on_path_profiles[i]
+		for player in game.players:
+			result[player][ap[player]][i] = 1
+	return result
+
+
+
 def get_all_vertices(matrix):
 	# TODO: Settle on an algorithm
 

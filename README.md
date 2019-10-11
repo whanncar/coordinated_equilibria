@@ -7,7 +7,7 @@
 
 * Decide on and implement algorithm for finding vertices
 
-* Implement algorithm for finding C
+* ~~Implement algorithm for finding C~~
 
 * Implement algorithm for finding D
 
