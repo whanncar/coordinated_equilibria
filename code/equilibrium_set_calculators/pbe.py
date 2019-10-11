@@ -98,22 +98,72 @@ def get_new_labels_hor(game, plans, base_labels, pred_labels):
 
 def add_deviant_info(game, matrix, indicators, labels, pred_labels, remaining_labels, state, vertex, pred_ap):
 	# Get on path action profile
+	lower_ap = {}
+	current = vertex
+	while True:
+		lower_ap[current.player] = current.action
+		if len(current.children.keys()) == 0:
+			break
+		current = current.children[current.action]
 	# Update indicator functions
+	for player in game.players:
+		for action in base_labels[player]:
+			if player not in lower_ap.keys():
+				indicators[player][action].append(0)
+			elif action != lower_ap[player]:
+				indicators[player][action].append(0)
+			else:
+				indicators[player][action].append(1)
 	# Get deviation payoffs for each on path vertex
+	payoffs = {}
+	current = vertex
+	while True:
+		payoffs[current.player] = {}
+		ap = {}
+		for player in pred_ap.keys():
+			ap[player] = pred_ap[player]
+		for player in lower_ap.keys():
+			ap[player] = lower_ap[player]
+		for deviant_action in game.actions[current.player]:
+			ap[current.player] = deviant_action
+			sub_current = current
+			while len(sub_current.children.keys()) > 0:
+				sub_current = sub_current.children[ap[sub_current.player]]
+				ap[sub_current.player] = sub_current.action
+			payoffs[current.player][deviant_action] = game.get_payoffs(ap, state)[current.player]
+		if len(current.children.keys()) == 0:
+			break
+		current = current.children[current.action]
 	# Set row to 0
+	row = 0
 	# For each player
+	for player in game.players:
 		# For each action a in remaining_labels
+		for a in remaining_labels[player]:
 			# For each action b available to the player
+			for b in game.actions[player]:
 				# If a is recommended
+				if player in payoffs.keys() and lower_ap[player] == a:
 					# Append difference in payoffs to row
+					matrix[row].append(payoffs[player][b] - payoffs[player][a])
 				# Otherwise
+				else:
 					# Append 0 to row
+					matrix[row].append(0)
 				# Increment row
+				row = row + 1
 	# If recommended action for this vertex is in pred_labels
+	if len(vertex.children.keys()) == 0:
+		return
+	if vertex.action in pred_labels[vertex.player]:
 		# For each child vertex
+		for a in game.actions[vertex.player]:
 			# Add appropriate action to pred_ap
+			pred_ap[vertex.player] = a
 			# Add deviant info for child vertex
+			add_deviant_info(game, matrix, indicators, labels, pred_labels, remaining_labels, state, vertex.children[a], pred_ap)
 			# Remove added action
+			pred_ap.pop[vertex.player]
 
 
 
