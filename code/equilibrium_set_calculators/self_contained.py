@@ -12,8 +12,9 @@ from LP_wrapper import maximize
 def get_self_contained_set(game):
 	C = get_self_contained_labels(game)
 	LP_data = prepare_LP_data(game, C)
-	vertices = get_all_vertices(LP_data['matrix'])
-	LP_data['vertices'] = vertices
+	LP_data['C'] = C
+#	vertices = get_all_vertices(LP_data['matrix'])
+#	LP_data['vertices'] = vertices
 	return LP_data
 
 
@@ -33,7 +34,7 @@ def get_self_contained_labels(game):
 	# Set different to true
 	different = True
 	# While different
-	while different
+	while different:
 		# Set labels to new_labels
 		labels = {}
 		for player in game.players:
@@ -50,7 +51,7 @@ def get_self_contained_labels(game):
 		for player in game.players:
 			for action in labels[player]:
 				lp_output = maximize(indicators[player][action], LP_data['matrix'])
-				if lp_output.fun > .000001:
+				if lp_output.fun < -.000001:
 					new_labels[player].append(action)
 		# Check whether new_labels is different from labels
 		different = False

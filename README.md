@@ -9,7 +9,7 @@
 
 * ~~Implement algorithm for finding C~~
 
-* Implement algorithm for finding D
+* ~~Implement algorithm for finding D~~
 
 
 

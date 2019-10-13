@@ -5,14 +5,18 @@ from NFG import NFG
 import LP
 from LP import prepare_LP_data, get_all_vertices
 
+import LP_wrapper
+from LP_wrapper import maximize
+
 import construction
 from construction import make_plans_with_given_labels
 
 def get_pbe_set(game):
 	D = get_pbe_labels(game)
 	LP_data = prepare_LP_data(game, D)
-	vertices = get_all_vertices(LP_data['matrix'])
-	LP_data['vertices'] = vertices
+	LP_data['D'] = D
+#	vertices = get_all_vertices(LP_data['matrix'])
+#	LP_data['vertices'] = vertices
 	return LP_data
 
 
@@ -29,6 +33,8 @@ def get_pbe_labels(game):
 	while different:
     # Set new_labels to empty set
 		new_labels = {}
+		for player in game.players:
+			new_labels[player] = []
 		changed = True
     # While new_labels changes
 		while changed:
@@ -39,11 +45,11 @@ def get_pbe_labels(game):
 				if len(new_labels[player]) != len(new_labels_plus_one[player]):
 					changed = True
 					new_labels[player] = new_labels_plus_one[player]
-	different = False
-	for player in game.players:
-		if len(labels[player]) != len(new_labels[player]):
-			different = True
-			labels[player] = new_labels[player]
+		different = False
+		for player in game.players:
+			if len(labels[player]) != len(new_labels[player]):
+				different = True
+				labels[player] = new_labels[player]
   # Return labels
 	return labels
 
@@ -65,12 +71,17 @@ def get_new_labels_hor(game, plans, base_labels, pred_labels):
 		for action in base_labels[player]:
 			indicators[player][action] = []
 	# Make remaining_labels
+	num_remaining_labels = 0
 	remaining_labels = {}
 	for player in game.players:
 		remaining_labels[player] = []
 		for action in base_labels[player]:
 			if action not in pred_labels[player]:
 				remaining_labels[player].append(action)
+				num_remaining_labels = num_remaining_labels + 1
+	# If there is nothing to check, return
+	if num_remaining_labels == 0:
+		return base_labels
 	# Initialize matrix
 	matrix = []
 	for player in game.players:
@@ -80,13 +91,13 @@ def get_new_labels_hor(game, plans, base_labels, pred_labels):
 	# For each plan
 	for plan in plans:
 		# Make and add rows for all marked versions of plan and populate indicator functions
-		add_deviant_info(game, matrix, indicators, pred_labels, remaining_labels, plan.state, plan.root, {})
+		add_deviant_info(game, matrix, indicators, base_labels, pred_labels, remaining_labels, plan.state, plan.root, {})
 	# For each player
 	for player in game.players:
 		# For each action in base_labels
 		for action in base_labels[player]:
 			lp_output = maximize(indicators[player][action], matrix)
-			if lp_output.fun > .000001:
+			if lp_output.fun < -.000001:
 				result[player].append(action)
 	# Return result
 	return result
@@ -107,7 +118,7 @@ def add_deviant_info(game, matrix, indicators, labels, pred_labels, remaining_la
 		current = current.children[current.action]
 	# Update indicator functions
 	for player in game.players:
-		for action in base_labels[player]:
+		for action in labels[player]:
 			if player not in lower_ap.keys():
 				indicators[player][action].append(0)
 			elif action != lower_ap[player]:
@@ -163,7 +174,7 @@ def add_deviant_info(game, matrix, indicators, labels, pred_labels, remaining_la
 			# Add deviant info for child vertex
 			add_deviant_info(game, matrix, indicators, labels, pred_labels, remaining_labels, state, vertex.children[a], pred_ap)
 			# Remove added action
-			pred_ap.pop[vertex.player]
+			pred_ap.pop(vertex.player)
 
 
 

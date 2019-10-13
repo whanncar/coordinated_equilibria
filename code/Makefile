@@ -8,6 +8,7 @@ mv_out_and_kill_folders:
 
 
 clean:
+	rm *.pyc
 	mkdir basic_objects; mv NFG.py Node.py Plan.py basic_objects
 	mkdir equilibrium_set_calculators; mv coord_eq.py pbe.py self_contained.py equilibrium_set_calculators
 	mkdir helpers; mv construction.py utils.py helpers

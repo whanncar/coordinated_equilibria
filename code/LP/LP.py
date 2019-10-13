@@ -57,7 +57,7 @@ def get_recommended_action_indicators(game, on_path_profiles):
 
 def get_all_vertices(matrix):
 	# TODO: Settle on an algorithm
-
+	return None
 
 
 

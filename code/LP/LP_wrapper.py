@@ -24,8 +24,8 @@ def maximize_with_probs_container(objective_vector, ineq_matrix, ineq_vector, eq
 	eq_vector.append(1)
 	list_of_lb_ub_pairs = []
 	for i in range(len(objective_vector)):
-		list_of_lb_ub_pairs.append([0, 1])
-	result = maximize_container(objective_vector, ineq_matrix, ineq_vector, eq_matrix, eq_vector, list_of_lb_ub_pairs)
+		list_of_lb_ub_pairs.append((0, 1))
+	result = maximize_container(objective_vector, ineq_matrix, ineq_vector, eq_matrix, eq_vector, tuple(list_of_lb_ub_pairs))
 	eq_matrix.pop(-1)
 	eq_vector.pop(-1)
 	return result

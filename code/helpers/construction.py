@@ -13,7 +13,7 @@ from Plan import Plan
 def make_plans_with_given_labels(game, labels): # labels: dict: player -> list of allowed labels
 	result = []
 	for s in game.states:
-		result = result + make_plans_for_given_state(game.actions, s, labels)
+		result = result + make_plans_for_given_state_with_given_labels(game.actions, s, labels)
 	return result
 
 
