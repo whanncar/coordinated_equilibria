@@ -1,6 +1,9 @@
 
 import utils
 
+
+
+
 class ThreatFunction:
 
 	def __init__(self, game):
@@ -14,6 +17,7 @@ class ThreatFunction:
 		self.data = {}
 		for i in range(len(game.states)):
 			self.data[game.states[i]] = self.make_skeleton([], players_copy)
+		print(self.data)
 		# Populate data with actual values
 		self.populate_data()
 
@@ -45,16 +49,12 @@ class ThreatFunction:
 					payoff = self.game.get_payoffs(ap, state)
 					# For each prefix
 					for i in range(len(pi)):
-						entry = self.data[state]
-						for j in range(i+1):
-							entry = entry[0][pi[j]]
-						entry = entry[1]
-						for j in range(i):
-							entry = entry[ap[pi[j]]]
-						# If payoff to last guy is smaller than current value OR current value is None
-						if (entry[ap[pi[i]]] is None) or (payoff[pi[i]] < entry[ap[pi[i]]]):
-							# Store as new value
-							entry[ap[pi[i]]] = payoff[pi[i]]
+						prefix = pi[:i]
+						last_mover = pi[i]
+						current_entry = self.get_entry(prefix, last_mover, ap, state)
+						if (current_entry is None) or (payoff[last_mover] < current_entry):
+							self.set_entry(prefix, last_mover, ap, state, payoff[last_mover])
+
 
 
 	def make_skeleton(self, previous_players, remaining_players):
@@ -71,8 +71,16 @@ class ThreatFunction:
 			next_player[chosen_player] = self.make_skeleton(previous_players, remaining_players)
 			# Fix previous and remaining players
 			previous_players.pop(-1)
+		# Restore remaining players to original state
+		while(len(old_remaining_players) > 0):
+			remaining_players.append(old_remaining_players.pop(0))
 		# Set up dictionary for organizing action profiles
-		min_data = self.build_pre_min_data_structure(previous_players)
+		min_data = {}
+		for i in range(len(self.game.players)):
+			if self.game.players[i] not in previous_players:
+				previous_players.append(self.game.players[i])
+				min_data[self.game.players[i]] = self.build_pre_min_data_structure(previous_players)
+				previous_players.pop(-1)
 		# Package everything and return
 		result = [next_player, min_data]
 		return result
@@ -98,3 +106,32 @@ class ThreatFunction:
 		return result
 
 
+
+
+
+	def get_entry_pointer(self, early_movers, last_mover, ap, state):
+		entry = self.data[state]
+		# Get sorted version of early movers
+		sorted_early_movers = []
+		for i in range(len(self.game.players)):
+			if self.game.players[i] in early_movers:
+				sorted_early_movers.append(self.game.players[i])
+		# Retrieve corresponding node of data structure
+		for i in range(len(sorted_early_movers)):
+			entry = entry[0][sorted_early_movers[i]]
+		entry = entry[1][last_mover]
+		# Retrieve value
+		for i in range(len(sorted_early_movers)):
+			entry = entry[ap[sorted_early_movers[i]]]
+		return entry
+
+
+
+	def get_entry(self, early_movers, last_mover, ap, state):
+		entry = self.get_entry_pointer(early_movers, last_mover, ap, state)
+		return entry[ap[last_mover]]
+
+
+	def set_entry(self, early_movers, last_mover, ap, state, value):
+		entry = self.get_entry_pointer(early_movers, last_mover, ap, state)
+		entry[ap[last_mover]] = value
