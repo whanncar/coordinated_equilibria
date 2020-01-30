@@ -66,5 +66,19 @@ def get_list_product(s):
 
 
 
-
+# Get transpose of matrix m
+def get_transpose(m):
+	result = []
+	# Get dimensions of m
+	old_num_rows = len(m)
+	old_num_cols = len(m[0])
+	# Set dimensions of m transpose
+	num_rows = old_num_cols
+	num_cols = old_num_rows
+	# Populate m transpose
+	for i in range(num_rows):
+		result.append([])
+		for j in range(num_cols):
+			result[-1].append(m[j][i])
+	return result
 
