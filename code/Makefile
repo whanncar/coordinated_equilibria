@@ -13,5 +13,6 @@ clean:
 	mkdir helpers; mv utils.py unutils.py helpers
 	mkdir io_ui; mv file_io.py game_editor.py io_ui
 	mkdir LP; mv unLP.py LP_wrapper.py LP
+	mkdir eq_calculators; mv calculator.py eq_calculators
 	mkdir tests; mv *.py tests
 	
