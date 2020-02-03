@@ -32,3 +32,44 @@ def prepare_LP_data(game):
 	# Package unplans and LP matrix together and return
 	result = [unplans, lp_matrix]
 	return result
+
+
+
+
+def get_action_indicators(game, unplans):
+	result = {}
+	players = game.players
+	actions = game.actions
+	# Prepare space for each indicator vector
+	for p in players:
+		result[p] = {}
+		for a in actions[p]:
+			result[p][a] = []
+	# Populate indicator vectors
+	for i in range(len(unplans)):
+		ap = unplans[i].ap
+		for p in players:
+			for a in actions[p]:
+				if ap[p] == a:
+					result[p][a].append(1)
+				else:
+					result[p][a].append(0)
+	return result
+
+
+def get_state_indicators(game, unplans)
+	result = {}
+	states = game.states
+	# Prepare space for each indicator vector
+	for s in states:
+		result[s] = []
+	# Populate indicator vectors
+	for i in range(len(unplans)):
+		s_i = unplans[i].state
+		for s in states:
+			if s == s_i:
+				result[s].append(1)
+			else:
+				result[s].append(0)
+	return result
+
