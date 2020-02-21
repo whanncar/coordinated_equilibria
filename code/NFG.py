@@ -30,5 +30,3 @@ class NFG:
 		return result
 
 
-	def get_copy_with_new_actions(self, new_actions):
-		return NFG(self.players, new_actions, self.states, self.payoffs)

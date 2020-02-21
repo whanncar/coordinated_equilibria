@@ -6,6 +6,8 @@ import utils
 
 class ThreatFunction:
 
+  # public
+
 	def __init__(self, game):
 		# Attach game to object
 		self.game = game
@@ -20,6 +22,20 @@ class ThreatFunction:
 		print(self.data)
 		# Populate data with actual values
 		self.populate_data()
+
+
+	def get_entry(self, early_movers, last_mover, ap, state):
+		entry = self.get_entry_pointer(early_movers, last_mover, ap, state)
+		return entry[ap[last_mover]]
+
+
+	def set_entry(self, early_movers, last_mover, ap, state, value):
+		entry = self.get_entry_pointer(early_movers, last_mover, ap, state)
+		entry[ap[last_mover]] = value
+
+
+
+  # private
 
 
 	def populate_data(self):
@@ -127,11 +143,4 @@ class ThreatFunction:
 
 
 
-	def get_entry(self, early_movers, last_mover, ap, state):
-		entry = self.get_entry_pointer(early_movers, last_mover, ap, state)
-		return entry[ap[last_mover]]
 
-
-	def set_entry(self, early_movers, last_mover, ap, state, value):
-		entry = self.get_entry_pointer(early_movers, last_mover, ap, state)
-		entry[ap[last_mover]] = value
