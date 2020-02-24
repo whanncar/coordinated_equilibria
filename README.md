@@ -1,121 +1,66 @@
 # coordinated_equilibria
 
 
-## TODO
 
-* Make tests for everything
+## Requirements
 
-* Decide on and implement algorithm for finding vertices
+The following Python modules are required; please make sure you already have them installed before using:
+* json
+* python-tk (to use the game editor)
+* copy
+* pycddlib
+* scipy
 
-* ~~Implement algorithm for finding C~~
+To test whether you already have these, open Python and run the following import commands:
+~~~
+>>> import json
+>>> import Tkinter
+>>> import copy
+>>> import cdd
+>>> import scipy
+~~~
+Instructions for easily installing any of these that are missing are readily available online.
 
-* ~~Implement algorithm for finding D~~
+
+## Example
 
 
+
+Navigate to the "code" directory and run
+~~~
+python game_editor.py
+~~~
+to create a game. For this example, we will use the name "Cournot". After you fill in the details of the game and click "save", the game will be stored in your working directory as "Cournot.nfg".
+
+Now, start Python and import file_io and calculator:
+~~~
+>>> import file_io, calculator
+~~~
+
+Next, load the game and create the calculator instance:
+~~~
+>>> game = file_io.load_NFG('Cournot.nfg')
+>>> calc = calculator.Calculator(game)
+~~~
+
+The following methods can then be used to study the game:
+~~~
+# Get list of unplans
+>>> calc.get_unplans()
+# Get vertices of set of unequilibria
+>>> calc.get_unequilibrium_vertices()
+# Get the actions that appear in self contained equilibria
+>>> calc.get_self_contained_support()
+# Get list of self-contained unplans
+>>> calc.get_self_contained_unplans()
+# Get vertices of set of self-contained unequilibria
+>>> calc.get_self_contained_unequilibrium_vertices()
+~~~
 
 
 ## Documentation
 
-
-
-### Basic objects
-
-
-#### NFG
-
-* Attributes
-  * players
-  * actions
-  * states
-  * payoffs
-* Methods
-  * get_payoffs
-
-
-#### Node
-
-* Attributes
-  * player
-  * action
-  * children
-
-
-#### Plan
-
-* Attributes
-  * state
-  * root
-* Methods
-  * get_on_path_action_profile
-  * get_copy
-  * get_deviation_payoffs
-
-
-
-### LP
-
-
-#### LP
-
-* prepare_LP_data
-* get_all_vertices
-
-
-#### LP_wrapper
-
-* minimize_container
-* maximize_container
-* maximize_with_probs_container
-* maximize
-
-
-### Equilibrium set calculators
-
-
-#### coord_eq
-
-* get_coord_eq_set
-
-
-#### self_contained
-
-* get_self_contained_set
-* get_self_contained_labels
-
-
-#### pbe
-
-* get_pbe_set
-* get_pbe_labels
-
-
-
-### Helpers
-
-
-#### construction
-
-* make_plans
-* make_plans_with_given_labels
-* make_plans_for_given_state_with_given_labels
-
-
-#### utils
-
-* get_ordered_tuples
-
-
-
-### IO/UI
-
-
-#### file_io
-
-* load_NFG
-* save_NFG
-
-
-
+To be written
 
 
 

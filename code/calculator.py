@@ -14,8 +14,26 @@ class Calculator:
 		self.calculated_values['self contained LP data'] = self_contained_stuff['LP']
 
 
+	def get_unplans(self):
+		result = []
+		unplans = self.calculated_values['LP data'][0]
+		for i in range(len(unplans)):
+			result.append(str(unplans[i]))
+		return result
+
+
+	def get_self_contained_unplans(self):
+		result = []
+		unplans = self.calculated_values['self contained LP data'][0]
+		for i in range(len(unplans)):
+			result.append(str(unplans[i]))
+		return result
+
+
 	def get_self_contained_support(self):
 		return self.calculated_values['self contained support']
+
+
 
 
 	def get_unequilibrium_vertices(self):
