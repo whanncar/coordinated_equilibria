@@ -47,12 +47,16 @@ The following methods can then be used to study the game:
 ~~~
 # Get list of unplans
 >>> calc.get_unplans()
+
 # Get vertices of set of unequilibria
 >>> calc.get_unequilibrium_vertices()
+
 # Get the actions that appear in self contained equilibria
 >>> calc.get_self_contained_support()
+
 # Get list of self-contained unplans
 >>> calc.get_self_contained_unplans()
+
 # Get vertices of set of self-contained unequilibria
 >>> calc.get_self_contained_unequilibrium_vertices()
 ~~~
