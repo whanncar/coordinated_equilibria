@@ -140,7 +140,7 @@ def get_all_player_permutations(game):
 	players_copy = []
 	for i in range(len(players)):
 		players_copy.append(players[i])
-	return utils.get_all_permutations(players_copy)
+	return get_all_permutations(players_copy)
 
 
 
@@ -148,13 +148,13 @@ def get_all_action_profiles(game):
 	players = game.players
 	actions = []
 	# Get list of action lists for players
-	for i in range(players):
+	for i in range(len(players)):
 		actions.append([])
 		actions_for_i = game.actions[players[i]]
 		for j in range(len(actions_for_i)):
 			actions[-1].append(actions_for_i[j])
 	# Get product of action lists
-	pre_aps = utils.get_list_product(actions)
+	pre_aps = get_list_product(actions)
 	# Turn ap lists into ap dictionaries
 	result = []
 	for i in range(len(pre_aps)):
@@ -208,7 +208,7 @@ def lp(c, A):
 #          v_i in [0, 1] for all i
 #          sum(v_i) = 1
 #          v.1(theta) = pi(theta) for all theta
-def lp_with_prior(c, A, pi, state_indicators)
+def lp_with_prior(c, A, pi, state_indicators):
 	# Negate c and A to put problem in canonical form
 	neg_c = negate_vector(c)
 	neg_A = negate_matrix(A)
@@ -288,7 +288,7 @@ def get_vertices(A):
 		for j in range(len(row)):
 			hrep[-1].append(row[j])
 	# Make entries into Fractions
-	nt = cdd.NumberTypable('fraction')
+	nt = cdd.NumberTypeable('fraction')
 	for i in range(len(hrep)):
 		for j in range(len(hrep[i])):
 			hrep[i][j] = nt.make_number(hrep[i][j])
@@ -339,9 +339,9 @@ def prepare_LP_data(game):
 	# Grab states
 	states = game.states
 	# Get list of permutations
-	perms = unutils.get_all_player_permutations(game)
+	perms = get_all_player_permutations(game)
 	# Get list of action profiles
-	aps = unutils.get_all_action_profiles(game)
+	aps = get_all_action_profiles(game)
 	# Make unplans and transpose of LP matrix
 	for i in range(len(states)):
 		state = states[i]
@@ -354,11 +354,22 @@ def prepare_LP_data(game):
 				# Compute column for this triple and add it to transpose of LP matrix as a row
 				lp_matrix_transpose.append(unplans[-1].get_LP_column())
 	# Take transpose of transpose of LP matrix to get LP matrix
-	lp_matrix = utils.get_transpose(lp_matrix_transpose)
+	lp_matrix = get_transpose(lp_matrix_transpose)
 	# Package unplans and LP matrix together and return
 	result = [unplans, lp_matrix]
 	return result
 
+
+
+def prepare_self_contained_LP_data(game):
+	new_game = copy.deepcopy(game)
+	new_actions = get_self_contained_action_set(game)
+	new_game.actions = new_actions
+	LP_data = prepare_LP_data(new_game)
+	result = {}
+	result['actions'] = new_actions
+	result['LP'] = LP_data
+	return result
 
 
 def get_action_indicators(game, unplans):
@@ -383,7 +394,7 @@ def get_action_indicators(game, unplans):
 
 
 
-def get_state_indicators(game, unplans)
+def get_state_indicators(game, unplans):
 	result = {}
 	states = game.states
 	# Prepare space for each indicator vector
@@ -414,11 +425,11 @@ def get_state_indicators(game, unplans)
 
 def get_supported_actions(game):
 	# Get unplans and LP matrix
-	LP_data = unLP.prepare_LP_data(game)
+	LP_data = prepare_LP_data(game)
 	unplans = LP_data[0]
 	LP_matrix = LP_data[1]
 	# Get action indicators
-	action_indicators = unLP.get_action_indicators(game, unplans)
+	action_indicators = get_action_indicators(game, unplans)
 	# Calculate supported actions
 	result = {}
 	players = game.players

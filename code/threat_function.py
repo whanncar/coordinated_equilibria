@@ -19,7 +19,6 @@ class ThreatFunction:
 		self.data = {}
 		for i in range(len(game.states)):
 			self.data[game.states[i]] = self.make_skeleton([], players_copy)
-		print(self.data)
 		# Populate data with actual values
 		self.populate_data()
 

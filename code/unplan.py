@@ -39,10 +39,19 @@ class Unplan:
 					# Otherwise
 					else:
 						# Store benefit from obedience
-						payoffs[p] - baby_tf[p][b]
+						result.append(payoffs[p] - baby_tf[p][b])
 		return result
 
 
+
+
+	def __str__(self):
+		result = self.state + " |"
+		for i in range(len(self.pi)):
+			player = self.pi[i]
+			action = self.ap[player]
+			result = result + " (" + player + ", " + action + ")"
+		return result
 
 
   # private
