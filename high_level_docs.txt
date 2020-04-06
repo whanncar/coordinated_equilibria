@@ -1,0 +1,22 @@
+
+
+Things that have to happen every time
+
+  - Make all unplans
+  - Calculate threat function for every unplan
+  - Make CE matrix
+  - Calculate self-contained labels
+  - Make all self-contained unplans
+  - Calculate threat function for every self-contained unplan
+  - Make self contained CE matrix
+  - Calculate deviant labels
+  - Make all deviantly labeled unplans
+  - Calculate threat function for every deviantly labeled unplan
+  - Make deviant CE matrix
+
+
+
+Flow
+
+  - Run preprocess on 'game.nfg' to produce 'game.data' which contains everything above
+  - Who knows what?

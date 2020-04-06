@@ -1,5 +1,7 @@
 
-import utils
+import l_utils
+
+import copy
 
 
 
@@ -7,20 +9,6 @@ import utils
 class ThreatFunction:
 
   # public
-
-	def __init__(self, game):
-		# Attach game to object
-		self.game = game
-		# Make copy of player list
-		players_copy = []
-		for i in range(len(game.players)):
-			players_copy.append(game.players[i])
-		# Make skeleton to hold data
-		self.data = {}
-		for i in range(len(game.states)):
-			self.data[game.states[i]] = self.make_skeleton([], players_copy)
-		# Populate data with actual values
-		self.populate_data()
 
 
 	def get_entry(self, early_movers, last_mover, ap, state):
@@ -34,6 +22,7 @@ class ThreatFunction:
 
 
 
+
   # private
 
 
@@ -42,7 +31,7 @@ class ThreatFunction:
 		players_copy = []
 		for i in range(len(self.game.players)):
 			players_copy.append(self.game.players[i])
-		perms = utils.get_all_permutations(players_copy)
+		perms = l_utils.get_all_permutations(players_copy)
 		# Make action profiles
 		actions = []
 		for i in range(len(self.game.players)):
@@ -50,7 +39,7 @@ class ThreatFunction:
 			actions_for_i = self.game.actions[self.game.players[i]]
 			for j in range(len(actions_for_i)):
 				actions[-1].append(actions_for_i[j])
-		aps = utils.get_list_product(actions)
+		aps = l_utils.get_list_product(actions)
 		# For each state
 		for state in self.game.states:
 			# For each permutation

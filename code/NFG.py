@@ -30,3 +30,19 @@ class NFG:
 		return result
 
 
+	def zip(self):
+		result = []
+		result.append(self.players)
+		result.append(self.actions)
+		result.append(self.states)
+		result.append(self.payoffs)
+		return result
+
+
+	def unzip(zipped_info):
+		players = zipped_info[0]
+		actions = zipped_info[1]
+		states = zipped_info[2]
+		payoffs = zipped_info[3]
+		return NFG(players, actions, states, payoffs)
+

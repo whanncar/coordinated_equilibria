@@ -1,4 +1,5 @@
 
+import copy
 
 
 
@@ -7,40 +8,80 @@ class Unplan:
 
   # public
 
-	def __init__(self, tf, pi, ap, state):
-		self.tf = tf
+	def __init__(self, pi, ap, state):
 		self.pi = pi
 		self.ap = ap
 		self.state = state
+		self.ltf = None
 
 
+	def populate_local_threat_function(self, game, tf):
+		# Instantiate ltf
+		self.ltf = {}
+		# Retrieve game data
+		players = game.players
+		actions = game.actions
+		# Retrieve state
+		state = self.state
+		# Make ltf skeleton
+		for p in players:
+			self.ltf[p] = {}
+			for a in actions[p]:
+				self.ltf[p][a] = 0
+		# Calculate obedient payoffs
+		obedient_payoffs = game.get_payoffs(self.ap, state)
+		# Populate ltf values
+		predecessors = []
+		ap_copy = copy.deepcopy(self.ap)
+		for i in range(len(self.pi)):
+			p = self.pi[i]
+			true_action = self.ap[p]
+			for a in actions[p]:
+				if a == true_action:
+					self.ltf[p][a] = obedient_payoffs[p]
+				else:
+					ap_copy[p] = a
+					self.ltf[p][a] = tf.get_entry(predecessors, p, ap_copy, state)
+			ap_copy[p] = true_action
+			predecessors.append(p)
 
-	def get_LP_column(self):
-		result = []
-		players = self.tf.game.players
-		# Compute obedience payoffs
-		payoffs = self.tf.game.get_payoffs(self.ap, self.state)
-		# Compute relevant threat function values:
-		baby_tf = self.prepare_threat_function_values()
+
+	def get_LP_column(self, game):
+		# Instantiate empty vector
+		column = []
+		# Retrieve players, actions, and local threat function
+		players = game.players
+		actions = game.actions
+		ltf = self.ltf
+		# Calculate column entries
 		# For each player
 		for i in range(len(players)):
 			p = players[i]
-			actions = self.tf.game.actions[p]
-			# For each recommended action for this player
-			for j in range(len(actions)):
-				a = actions[j]
-				# For each action that this player can deviate to
-				for k in range(len(actions)):
-					b = actions[k]
-					# If this is not recommended action or recommended action is same as defiant action
-					if (a != self.ap[p]) or (a == b):
-						# Set value to 0
-						result.append(0)
-					# Otherwise
-					else:
-						# Store benefit from obedience
-						result.append(payoffs[p] - baby_tf[p][b])
-		return result
+			actions_for_p = actions[p]
+			# For each recommended action
+			for j in range(len(actions_for_p)):
+				a = actions_for_p[j]
+				# If a is not the recommended action for p
+				if a != self.ap[p]:
+					# Set entry to 0 for each deviating action
+					for k in range(len(actions_for_p)):
+						column.append(0)
+				# If a is the recommended action for p
+				else:
+					# Retrieve obedient payoff for p
+					obedient_payoff_for_p = self.ltf[p][a]
+					# For each deviating action
+					for k in range(len(actions_for_p)):
+						# If this is the recommended action, set entry to 0
+						if k == j:
+							column.append(0)
+						# If this is not the recommended action, set entry to difference in payoffs
+						else:
+							b = actions_for_p[k]
+							column.append(obedient_payoff_for_p - self.ltf[p][b])
+			# Return column
+			return column
+
 
 
 
@@ -54,33 +95,23 @@ class Unplan:
 		return result
 
 
-  # private
+	def zip(self):
+		result = []
+		result.append(self.pi)
+		result.append(self.ap)
+		result.append(self.state)
+		result.append(self.ltf)
+		return result
 
 
-	def prepare_threat_function_values(self):
-		baby_threat_function = {}
-		prefix = []
-		# For each prefix of pi
-		for i in range(len(self.pi)):
-			# Get the actions for players that go before current player
-			baby_ap = {}
-			for early_player in prefix:
-				baby_ap[early_player] = self.ap[early_player]
-			# Grab current player and current player's actions
-			current_player = self.pi[i]
-			actions = self.tf.game.actions[current_player]
-			# For each action that current player could deviate to, store threat value
-			baby_threat_function[current_player] = {}
-			for j in range(len(actions)):
-				b = actions[j]
-				baby_ap[current_player] = b
-				baby_threat_function[current_player][b] = self.tf.get_entry(prefix, current_player, baby_ap, self.state)
-			# Add current player to prefix
-			prefix.append(current_player)
-		return baby_threat_function
-
-
-
+	def unzip(zipped_info):
+		pi = zipped_info[0]
+		ap = zipped_info[1]
+		state = zipped_info[2]
+		ltf = zipped_info[3]
+		result = Unplan(pi, ap, state)
+		result.ltf = ltf
+		return result
 
 
 
